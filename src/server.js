@@ -1,14 +1,17 @@
+import http from 'http';
 import 'express-async-errors';
 import config from './config.js';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import compression from 'compression';
 import bodyParser from 'body-parser';
+
 import { winstonLogger } from '../../9-jobber-shared/src/logger.js';
 import { CustomError } from '../../9-jobber-shared/src/errors.js';
 import { appRoutes } from './routes.js';
-import{checkConnection} from './elasticsearch.js';
-import{createConnection} from './queues/connection.js';
+import { checkConnection } from './elasticsearch.js';
+import { createConnection } from './queues/connection.js';
+import { Server } from 'socket.io';
 
 
 const log = winstonLogger('ChatServer', 'debug');
@@ -38,8 +41,8 @@ function standardMiddleware(app) {
 }
 
 function routesMiddleware(app) {
-    
-   appRoutes(app);
+
+    appRoutes(app);
 }
 
 async function startQueues() {
@@ -48,14 +51,14 @@ async function startQueues() {
         // await consumeGigDirectMessage(gigChannel);
         // await consumeSeedDirectMessage(gigChannel);
         return chatChannel;
-        
+
     } catch (error) {
         log.error('error in startQueues() in server.js ', error, '');
     }
 
 }
 
-function startElasticSearch(){
+function startElasticSearch() {
     checkConnection();
 }
 
@@ -71,14 +74,39 @@ function errorHandler(app) {
     });
 }
 
-function startServer(app) {
+
+
+function createSocketIo(httpServer) {
+    const io = new Server(httpServer, {
+        cors: {
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        }
+    })
+
+    return io;
+}
+function startHttpServer(httpServer) {
     try {
         const SERVER_PORT = 4005;
-        app.listen(SERVER_PORT, () => {
+        httpServer.listen(SERVER_PORT, () => {
             log.info(`chat server is listening on ${SERVER_PORT}`);
         });
     } catch (err) {
-        log.log('error','error in startServer(): ', err);
+        log.log('error', 'error in startHttpServer(): ', err);
+
+    }
+}
+
+function startServer(app) {
+    try {
+        const httpServer = new http.Server(app);
+        startHttpServer(httpServer);
+        const socketIO =  createSocketIo(httpServer);
+        return socketIO;
+
+    } catch (err) {
+        log.log('error', 'error in startServer(): ', err);
 
     }
 }
@@ -90,9 +118,9 @@ async function start(app) {
     const chatChannel = await startQueues();
     startElasticSearch();
     errorHandler(app);
-    startServer(app);
+    const socketIoChatObject = startServer(app);
 
-    return chatChannel;
+    return {chatChannel,socketIoChatObject};
 }
 
 

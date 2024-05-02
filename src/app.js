@@ -5,13 +5,13 @@ const app = express();
 
 const init = async()=>{
     await databaseConnection();
-    const chatChannel = await start(app);
-    return chatChannel;
+    return await start(app);
 }
 
 
 
-const chatChannel = await init();
+const {chatChannel,socketIoChatObject} = await init();
 
 
-export{chatChannel};
+
+export{chatChannel,socketIoChatObject};
