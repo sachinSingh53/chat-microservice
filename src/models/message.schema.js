@@ -24,7 +24,7 @@ const messageSchema = new Schema({
         accepted: { type: Boolean, default: false },
         cancelled: { type: Boolean, default: false },
     },
-    createdAt: { type: Date }
+    createdAt: { type: Date,default: Date.noww }
 },
     {
         versionKey: false

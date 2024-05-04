@@ -41,7 +41,6 @@ function standardMiddleware(app) {
 }
 
 function routesMiddleware(app) {
-
     appRoutes(app);
 }
 
