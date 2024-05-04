@@ -9,7 +9,7 @@ const messageRoutes = ()=>{
     router.get('/conversation/:senderUsername/:receiverUsername',conversation);
     router.get('/conversations/:username',userConversationList);
     router.get('/:senderUsername/:receiverUsername',messages);
-    router.get('conversation/:conversationId',userMessages);
+    router.get('/conversation/:conversationId',userMessages);
     router.post('/',message);
     router.put('/offer',offer);
     router.put('/mark-as-read',markSingleMessage);
