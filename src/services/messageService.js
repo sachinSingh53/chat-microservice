@@ -32,10 +32,10 @@ const addMessage = async (data) => {
             JSON.stringify(emailMessageDetails),
             'Order email sent to notification service'
         )
-        socketIoChatObject.emit('message recieved', message);
-        return message;
+        
     }
-
+    socketIoChatObject.emit('message recieved', message);
+    return message;
 }
 
 const getConversation = async (sender, receiver) => {
@@ -132,12 +132,12 @@ const updateOffer = async (messageId, type) => {
     return message;
 }
 
-const markMessageAsRead = async(messageId)=>{
+const markMessageAsRead = async (messageId) => {
     const message = await MessageModel.findOneAndUpdate(
         { _id: messageId },
         {
             $set: {
-                isRead:true
+                isRead: true
             }
         },
         { new: true }
@@ -147,17 +147,17 @@ const markMessageAsRead = async(messageId)=>{
 
     return message;
 }
-const markManyMessagesAsRead = async(sender,receiver,messageId)=>{
+const markManyMessagesAsRead = async (sender, receiver, messageId) => {
     await MessageModel.updateMany(
-        { senderUsername:sender, receiverUsername:receiver, isRead:false },
+        { senderUsername: sender, receiverUsername: receiver, isRead: false },
         {
             $set: {
-                isRead:true
+                isRead: true
             }
         }
     );
-    
-    const message = await MessageModel.findOne({_id:messageId});
+
+    const message = await MessageModel.findOne({ _id: messageId });
     socketIoChatObject.emit('message updated', message);
 
     return message;

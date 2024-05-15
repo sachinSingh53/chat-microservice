@@ -1,7 +1,7 @@
 import{messageSchema} from '../schemes/message.js'
 import{uploads} from '../../../9-jobber-shared/src/cloudinaryUploader.js'
 import{BadRequestError} from '../../../9-jobber-shared/src/errors.js'
-import{createConversation} from '../services/messageService.js'
+import{addMessage, createConversation} from '../services/messageService.js'
 import crypto from 'crypto'
 import{StatusCodes} from 'http-status-codes'
 const message = async(req,res)=>{
@@ -18,6 +18,7 @@ const message = async(req,res)=>{
         if(!result.public_id){
             throw new BadRequestError('File upload error ','create message() method'); 
         }
+        file = result?.secure_url;
     }
 
     const messageData = {
@@ -41,6 +42,8 @@ const message = async(req,res)=>{
     if(!req.body.hasConversationId){
         await createConversation(messageData.conversationId,messageData.senderUsername,messageData.receiverUsername);
     }
+
+    await addMessage(messageData);
 
     res.status(StatusCodes.OK).json({
         message:'message added',
