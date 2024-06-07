@@ -4,6 +4,7 @@ import{ getConversation, getMessages, getUserConversationList, getUserMessages }
 const conversation = async(req,res)=>{
     const {senderUsername, receiverUsername} = req.params;
     const conversation = await getConversation(senderUsername,receiverUsername);
+    
     res.status(StatusCodes.OK).json({
         message: ' chat conversation',
         conversation
@@ -15,7 +16,7 @@ const userConversationList = async(req,res)=>{
     const messages = await getUserConversationList(username);
     res.status(StatusCodes.OK).json({
         message: 'Conversation List',
-        conversation: messages
+        conversations: messages
     })
 }
 
@@ -30,6 +31,7 @@ const messages = async(req,res)=>{
 
 const userMessages = async(req,res)=>{
     const {conversationId} = req.params;
+
     const messages = await getUserMessages(conversationId);
     res.status(StatusCodes.OK).json({
         message: 'chat messages',

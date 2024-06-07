@@ -44,13 +44,16 @@ const getConversation = async (sender, receiver) => {
             { senderUsername: sender, receiverUsername: receiver },
             { senderUsername: receiver, receiverUsername: sender }
         ]
+        
     }
 
+
     const conversation = await ConversationModel.aggregate([{ $match: query }]);
+
     return conversation;
 }
 
-//this is used tho get the list or the recent messages
+//this is used tho get the list of most recent messages of user
 const getUserConversationList = async (username) => {
     const query = {
         $or: [
@@ -61,7 +64,15 @@ const getUserConversationList = async (username) => {
     const messages = await MessageModel.aggregate([
         { $match: query },
         {
-            //here we are grouping the message based on there conversationId and sorting them in descending order
+
+            /*
+            - Group documents by conversationId: All documents with the same conversationId are grouped together.
+            - Within each group, find the most recent document: Using the createdAt field, the documents are sorted
+              in descending order.
+            - Output the most recent document in each group: The $top operator ensures that only the most recent document 
+              (based on createdAt) within each group is included in the final result.
+            */
+
             $group: {
                 _id: '$conversationId',
                 result: { $top: { output: '$$ROOT', sortBy: { createdAt: -1 } } }
@@ -78,9 +89,9 @@ const getUserConversationList = async (username) => {
                 sellerId: '$result.sellerId',
                 buyerId: '$result.buyerId',
                 receiverUsername: '$result.receiverUsername',
-                receiverPicture: '$result.receiverPicture',
+                // receiverPicture: '$result.receiverPicture',
                 senderUsername: '$result.senderUsername',
-                senderPicture: '$result.senderPicture',
+                // senderPicture: '$result.senderPicture',
                 body: '$result.body',
                 file: '$result.file',
                 gigId: '$result.gigId',
@@ -106,6 +117,7 @@ const getMessages = async (sender, receiver) => {
         { $match: query },
         { $sort: { createdAt: 1 } }
     ]);
+
     return messages;
 }
 
