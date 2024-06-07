@@ -15,7 +15,7 @@ const offer = async(req,res)=>{
 const markMultipleMessages = async(req,res)=>{
     const {messageId,senderUsername,receiverUsername} = req.body;
 
-    const message = await markManyMessagesAsRead(senderUsername,receiverUsername,messageId);
+    await markManyMessagesAsRead(senderUsername,receiverUsername,messageId);
     res.status(StatusCodes.OK).json({
         message: 'messages marked as read',
         // singleMessage: message
