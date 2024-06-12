@@ -15,6 +15,7 @@ const addMessage = async (data) => {
 
     if (data.hasOffer) {
         const emailMessageDetails = {
+            //it should also contain receiverEmail field
             sender: data.senderUsername,
             amount: `${data.offer?.price}`,
             buyerUsername: data.receiverUsername,
@@ -24,7 +25,6 @@ const addMessage = async (data) => {
             deliveryDays: data.offer?.deliveryInDays,
             template: 'offer'
         }
-
         publishDirectMessage(
             chatChannel,
             'jobber-order-notification',
