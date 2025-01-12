@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@elastic/elasticsearch": "^8.13.1",
+    "@sachinsingh53/jobber-shared": "npm:@sachinSingh53/jobber-shared@^0.0.6",
     "amqplib": "^0.10.4",
     "body-parser": "^1.20.2",
     "cloudinary": "^2.2.0",
@@ -28,6 +29,7 @@
     "mongoose": "^8.3.2",
     "redis": "^4.6.13",
     "socket.io": "^4.7.5",
-    "winston": "^3.13.0"
+    "winston": "^3.13.0",
+    "winston-elasticsearch": "^0.18.0"
   }
 }

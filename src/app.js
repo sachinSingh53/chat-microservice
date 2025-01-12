@@ -8,10 +8,6 @@ const init = async()=>{
     return await start(app);
 }
 
-
-
 const {chatChannel,socketIoChatObject} = await init();
-
-
 
 export{chatChannel,socketIoChatObject};

@@ -1,6 +1,6 @@
 import{messageSchema} from '../schemes/message.js'
-import{uploads} from '../../../9-jobber-shared/src/cloudinaryUploader.js'
-import{BadRequestError} from '../../../9-jobber-shared/src/errors.js'
+import{uploads} from '@sachinsingh53/jobber-shared'
+import{BadRequestError} from '@sachinsingh53/jobber-shared'
 import{addMessage, createConversation} from '../services/messageService.js'
 import crypto from 'crypto'
 import{StatusCodes} from 'http-status-codes'

@@ -1,9 +1,9 @@
 
 import mongoose from 'mongoose'
-import{winstonLogger} from '../../9-jobber-shared/src/logger.js';
+import{winstonLogger} from '@sachinsingh53/jobber-shared';
 import config from './config.js';
 
-const log = winstonLogger('Chat Database Server','debug');
+const log = winstonLogger(`${config.ELASTIC_SEARCH_URL}`,'Chat Database Server','debug');
 
 const databaseConnection = async ()=>{
     try {

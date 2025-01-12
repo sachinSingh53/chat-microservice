@@ -15,7 +15,6 @@ const messageRoutes = ()=>{
     router.put('/mark-as-read',markSingleMessage);
     router.put('/mark-multiple-as-read',markMultipleMessages);
 
-    
     return router;
 }
 

@@ -1,8 +1,8 @@
 import { Client } from '@elastic/elasticsearch';
-import { winstonLogger } from '../../9-jobber-shared/src/logger.js';
+import { winstonLogger } from '@sachinsingh53/jobber-shared';
 import config from './config.js';
 
-const log = winstonLogger('chatElasticSearchServer', 'debug');
+const log = winstonLogger(`${config.ELASTIC_SEARCH_URL}`,'chatElasticSearchServer', 'debug');
 
 const elasticSearchClient = new Client({
     node: `${config.ELASTIC_SEARCH_URL}`
